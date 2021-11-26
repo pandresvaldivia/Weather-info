@@ -1,0 +1,44 @@
+.loading {
+	background-image: url('../assets/images/sara.webp'), var(--gradient);
+	background-repeat: no-repeat;
+	background-position: center;
+	block-size: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: 0.3s opacity;
+	position: absolute;
+	inset: 0;
+}
+
+.loading[hidden] {
+	visibility: hidden;
+	opacity: 0;
+}
+
+.loading:before {
+	content: '';
+	position: absolute;
+	border-radius: 50%;
+	inline-size: 30px;
+	block-size: 30px;
+}
+
+.loading:after {
+	content: '';
+	display: block;
+	inline-size: 12.5rem;
+	block-size: 0.375rem;
+	background-color: white;
+	animation: time 3s linear infinite;
+	transform-origin: left center;
+	position: relative;
+	left: 6.25rem;
+	border-radius: 0.1875rem 0 0 0.1875rem;
+}
+
+@keyframes time {
+	to {
+		transform: rotate(360deg);
+	}
+}
