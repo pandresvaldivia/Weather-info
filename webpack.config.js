@@ -11,6 +11,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: './js/main.js',
+		assetModuleFilename: './assets/images/[name][contenthash][ext]',
 	},
 	resolve: {
 		extensions: ['.js'],
@@ -27,6 +28,17 @@ module.exports = {
 			{
 				test: /\.css$/i,
 				use: [MiniCssExtractPlugin.loader, 'css-loader'],
+			},
+			{
+				test: /\.(png|webp|svg)$/,
+				type: 'asset/resource',
+			},
+			{
+				test: /\.(woff(2)?|ttf|eot|svg)$/,
+				type: 'asset/resource',
+				generator: {
+					filename: './assets/fonts/[name][contenthash][ext]',
+				},
 			},
 		],
 	},
