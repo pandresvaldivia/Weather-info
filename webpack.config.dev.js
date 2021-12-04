@@ -2,8 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const WebpackDevServer = require('webpack-dev-server');
 
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
@@ -13,9 +12,10 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: './js/[name].[contenthash].bundle.js',
-		clean: true,
 		assetModuleFilename: './assets/images/[name][contenthash][ext]',
 	},
+	mode: 'development',
+	devtool: 'source-map',
 	resolve: {
 		extensions: ['.js'],
 	},
@@ -71,8 +71,12 @@ module.exports = {
 			],
 		}),
 	],
-	optimization: {
-		minimize: true,
-		minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
+	devServer: {
+		static: {
+			directory: path.join(__dirname, 'dist'),
+		},
+		historyApiFallback: true,
+		compress: true,
+		port: 9000,
 	},
 };
