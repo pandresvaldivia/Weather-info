@@ -5,3 +5,7 @@ import '../css/tabs.css';
 import '../css/day-weather.css';
 import '../css/loading.css';
 import '../css/index.css';
+
+import { currentWeather } from './current-wheather.js';
+
+currentWeather();
