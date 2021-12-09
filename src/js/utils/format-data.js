@@ -1,3 +1,5 @@
+import { weatherCode } from '../constants.js';
+
 const defaultDateFormat = {
 	day: 'numeric',
 	weekday: 'long',
@@ -12,4 +14,17 @@ function formatTemp(temp) {
 	return `${temp.toFixed()}°`;
 }
 
-export { formatDate, formatTemp };
+function formatCode(code) {
+	return String(code).charAt();
+}
+
+function formatUrl(code, time) {
+	const weather = weatherCode[formatCode(code)];
+	const is2x = window.matchMedia('(-webkit-min-device-pixel-ratio:2)').matches
+		? '@2x'
+		: '';
+
+	return `url(../assets/images/${time}-${weather}${is2x}.webp)`;
+}
+
+export { formatDate, formatTemp, formatUrl };
