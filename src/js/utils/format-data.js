@@ -24,7 +24,7 @@ function formatUrl(code, time) {
 		? '@2x'
 		: '';
 
-	return `url(../assets/images/${time}-${weather}${is2x}.webp)`;
+	return `url(./assets/images/${time}-${weather}${is2x}.webp)`;
 }
 
 export { formatDate, formatTemp, formatUrl };

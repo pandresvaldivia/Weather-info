@@ -6,3 +6,13 @@ export const weatherCode = {
 	7: 'cloudy',
 	8: 'clean',
 };
+
+export const weekdays = [
+	'Sunday',
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday',
+];

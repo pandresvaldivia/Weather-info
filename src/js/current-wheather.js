@@ -2,6 +2,7 @@ import { formatDate, formatTemp, formatUrl } from './utils/format-data.js';
 import { $city, $date, $temp, $app, $loader } from './selectors.js';
 import { getCoordinates } from './geolocation.js';
 import { getCurrentWeather } from './services/weather.js';
+import { printTabs } from './tabs.js';
 
 async function currentWeather() {
 	const { latitude, longitude, error } = await getCoordinates();
@@ -14,6 +15,7 @@ async function currentWeather() {
 
 	configCurrentWeather(weatherData);
 	setBackground(weatherData);
+	printTabs();
 	showInfo($app, $loader);
 }
 

@@ -3,3 +3,4 @@ export const $date = document.querySelector('#current-weather-date');
 export const $temp = document.querySelector('#current-weather-temp');
 export const $app = document.querySelector('#app');
 export const $loader = document.querySelector('#loading');
+export const $tabs = document.querySelectorAll('.tabList .tab');
