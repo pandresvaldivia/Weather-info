@@ -1,6 +1,5 @@
-import weather from '../assets/data/current-weather.js';
 import { formatDate, formatTemp, formatUrl } from './utils/format-data.js';
-import { $city, $date, $temp, $app } from './selectors.js';
+import { $city, $date, $temp, $app, $loader } from './selectors.js';
 import { getCoordinates } from './geolocation.js';
 import { getCurrentWeather } from './services/weather.js';
 
@@ -15,6 +14,7 @@ async function currentWeather() {
 
 	configCurrentWeather(weatherData);
 	setBackground(weatherData);
+	showInfo($app, $loader);
 }
 
 function printWeatherInfo(element, data) {
@@ -40,6 +40,11 @@ function getDayTime({ sunrise, sunset }) {
 async function setBackground({ weather, sys }) {
 	const code = weather[0].id;
 	$app.style.backgroundImage = formatUrl(code, getDayTime(sys));
+}
+
+function showInfo(app, loading) {
+	loading.hidden = true;
+	app.hidden = false;
 }
 
 export { currentWeather };
