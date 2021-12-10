@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
 	context: path.resolve(__dirname, 'src'),
@@ -70,6 +71,7 @@ module.exports = {
 				},
 			],
 		}),
+		new Dotenv(),
 	],
 	optimization: {
 		minimize: true,

@@ -2,14 +2,19 @@ import weather from '../assets/data/current-weather.js';
 import { formatDate, formatTemp, formatUrl } from './utils/format-data.js';
 import { $city, $date, $temp, $app } from './selectors.js';
 import { getCoordinates } from './geolocation.js';
+import { getCurrentWeather } from './services/weather.js';
 
 async function currentWeather() {
 	const { latitude, longitude, error } = await getCoordinates();
 
 	if (error) return console.error(error);
 
-	configCurrentWeather(weather);
-	setBackground();
+	const weatherData = await getCurrentWeather(latitude, longitude);
+
+	if (weatherData.error) return new Error(weatherData.error);
+
+	configCurrentWeather(weatherData);
+	setBackground(weatherData);
 }
 
 function printWeatherInfo(element, data) {
@@ -22,19 +27,19 @@ function configCurrentWeather({ name, main: { temp } }) {
 	printWeatherInfo($temp, formatTemp(temp));
 }
 
-function getDayTime() {
+function getDayTime({ sunrise, sunset }) {
 	const currentTime = new Date().getHours();
-	const sunriseTime = new Date(weather.sys.sunrise * 1000).getHours();
-	const sunseTime = new Date(weather.sys.sunset * 1000).getHours();
+	const sunriseTime = new Date(sunrise * 1000).getHours();
+	const sunseTime = new Date(sunset * 1000).getHours();
 
 	return currentTime > sunseTime || currentTime < sunriseTime
 		? 'night'
 		: 'morning';
 }
 
-async function setBackground() {
-	const code = weather.weather[0].id;
-	$app.style.backgroundImage = formatUrl(code, getDayTime());
+async function setBackground({ weather, sys }) {
+	const code = weather[0].id;
+	$app.style.backgroundImage = formatUrl(code, getDayTime(sys));
 }
 
 export { currentWeather };
