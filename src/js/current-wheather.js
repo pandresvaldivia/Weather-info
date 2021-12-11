@@ -1,22 +1,19 @@
 import { formatDate, formatTemp, formatUrl } from './utils/format-data.js';
 import { $city, $date, $temp, $app, $loader } from './selectors.js';
 import { getCoordinates } from './geolocation.js';
-import { getCurrentWeather } from './services/weather.js';
-import { printTabs } from './tabs.js';
+import { getWeatherInfo } from './services/weather.js';
 
 async function currentWeather() {
 	const { latitude, longitude, error } = await getCoordinates();
 
 	if (error) return console.error(error);
 
-	const weatherData = await getCurrentWeather(latitude, longitude);
+	const weatherData = await getWeatherInfo(latitude, longitude);
 
 	if (weatherData.error) return new Error(weatherData.error);
 
-	configCurrentWeather(weatherData);
 	setBackground(weatherData);
-	printTabs();
-	showInfo($app, $loader);
+	configCurrentWeather(weatherData);
 }
 
 function printWeatherInfo(element, data) {
@@ -27,6 +24,7 @@ function configCurrentWeather({ name, main: { temp } }) {
 	printWeatherInfo($city, name);
 	printWeatherInfo($date, formatDate(new Date()));
 	printWeatherInfo($temp, formatTemp(temp));
+	showInfo($app, $loader);
 }
 
 function getDayTime({ sunrise, sunset }) {

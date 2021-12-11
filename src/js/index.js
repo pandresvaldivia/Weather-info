@@ -7,6 +7,8 @@ import '../css/loading.css';
 import '../css/index.css';
 
 import { currentWeather } from './current-wheather.js';
+import { weeklyWeather } from './weekly-weather.js';
+import { printTabs } from './tabs.js';
 import { $app, $loader } from './selectors.js';
 import Viewport from './utils/viewport.js';
 
@@ -15,4 +17,6 @@ const viewport = new Viewport();
 viewport.viewportSize($app);
 viewport.viewportSize($loader);
 
+printTabs();
 currentWeather();
+weeklyWeather();

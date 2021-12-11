@@ -1,9 +1,9 @@
 const key = process.env.APIKEY;
 
-async function getCurrentWeather(lat, lon) {
+async function getWeatherInfo(lat, lon, range = 'weather') {
 	try {
 		const response = await fetch(
-			`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${key}&units=metric`
+			`https://api.openweathermap.org/data/2.5/${range}?lat=${lat}&lon=${lon}&appid=${key}&units=metric`
 		);
 
 		const data = await response.json();
@@ -14,4 +14,4 @@ async function getCurrentWeather(lat, lon) {
 	}
 }
 
-export { getCurrentWeather };
+export { getWeatherInfo };
