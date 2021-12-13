@@ -1,5 +1,7 @@
 import { getCoordinates } from './geolocation.js';
 import { getWeatherInfo } from './services/weather.js';
+import { $tabsContainer } from './selectors.js';
+import Panel from './utils/panel.js';
 
 async function weeklyWeather() {
 	const { latitude, longitude, error } = await getCoordinates();
@@ -9,7 +11,12 @@ async function weeklyWeather() {
 	const weatherData = await getWeatherInfo(latitude, longitude, 'forecast');
 
 	if (weatherData.error) return new Error(weatherData.error);
-	console.log(formatWeekList(weatherData.list));
+
+	const list = formatWeekList(weatherData.list);
+
+	const panel = new Panel($tabsContainer, list);
+
+	panel.printPanels();
 }
 
 function formatWeekList(rawData) {

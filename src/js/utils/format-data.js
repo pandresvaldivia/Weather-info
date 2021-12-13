@@ -6,8 +6,8 @@ const defaultDateFormat = {
 	month: 'long',
 };
 
-function formatDate(date, format = defaultDateFormat) {
-	return new Intl.DateTimeFormat('en-US', format).format(date);
+function formatDate(date, format = defaultDateFormat, language = 'en-US') {
+	return new Intl.DateTimeFormat(language, format).format(date);
 }
 
 function formatTemp(temp) {
