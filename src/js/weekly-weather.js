@@ -1,7 +1,8 @@
 import { getCoordinates } from './geolocation.js';
 import { getWeatherInfo } from './services/weather.js';
-import { $tabsContainer } from './selectors.js';
+import { $tabsContainer, $container } from './selectors.js';
 import Panel from './utils/panel.js';
+import Draggable from './animation/draggable.js';
 
 async function weeklyWeather() {
 	const { latitude, longitude, error } = await getCoordinates();
@@ -17,6 +18,9 @@ async function weeklyWeather() {
 	const panel = new Panel($tabsContainer, list);
 
 	panel.printPanels();
+
+	const draggable = new Draggable($container, { debug: true, state: 'open' });
+	draggable.setPositionVariables();
 }
 
 function formatWeekList(rawData) {

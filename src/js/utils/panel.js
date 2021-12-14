@@ -14,7 +14,7 @@ export default class Panel {
 			const $item = this.createItem(data, index);
 			$panel.querySelector('.dayWeather-list').appendChild($item);
 		});
-		console.log($panel);
+
 		return $panel;
 	}
 

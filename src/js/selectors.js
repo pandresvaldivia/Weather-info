@@ -5,3 +5,4 @@ export const $app = document.querySelector('#app');
 export const $loader = document.querySelector('#loading');
 export const $tabsContainer = document.querySelector('#tabs');
 export const $tabs = document.querySelectorAll('.tabList .tab');
+export const $container = document.querySelector('.weeklyWeather');
