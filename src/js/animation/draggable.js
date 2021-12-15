@@ -1,56 +1,126 @@
 const defaultConfig = {
-	debug: false,
-	state: 'open',
+	open: true,
+	debug: true,
+	animatable: true,
 };
 
-export default class Draggable {
-	constructor($target, config = defaultConfig) {
-		this.$target = $target;
-		this.config = config;
-		this.config.state === 'open'
-			? (this.state = 'open')
-			: (this.state = 'close');
-		this.VISIBLE_Y_POSITION = '0';
-		this.setWidgetMarker();
-		this.setWidgetDimensions();
-		this.setPositionVariables();
+export default function draggable($target, config = defaultConfig) {
+	let isOpen = config.open;
+	let isDragging = false;
+	const VISIBLE_WIDGET_POSITION = 0;
+	let widgetPosition = VISIBLE_WIDGET_POSITION;
+	let startY = 0;
+
+	const $marker = $target.querySelector('[data-marker]');
+
+	const { height: targetHeight } = $target.getBoundingClientRect();
+	const { height: markerHeight } = $marker.getBoundingClientRect();
+
+	const HIDDEN_WIDGET_POSITION = targetHeight - markerHeight;
+
+	isOpen ? open() : close();
+	if (config.animatable) setAnimations();
+
+	// Event listeners
+
+	$marker.addEventListener('click', handleClick);
+	$marker.addEventListener('pointerdown', handlePointerDown);
+	$marker.addEventListener('pointerup', handlePointerUp);
+	$marker.addEventListener('pointerout', handlePointerOut);
+	$marker.addEventListener('pointercancel', handlePointerCancel);
+	$marker.addEventListener('pointermove', handlePointerMove);
+
+	// Event listener function
+
+	function handleClick(event) {
+		toggle();
 	}
 
-	setWidgetMarker() {
-		this.$marker = this.$target.querySelector('[data-marker]');
+	function handlePointerDown(event) {
+		startDrag(event);
 	}
 
-	setWidgetDimensions() {
-		const { height: widgetHeight } = this.$target.getBoundingClientRect();
-		const { height: markerHeight } = this.$marker.getBoundingClientRect();
-		this.TARGET_BLOCK_SIZE = widgetHeight;
-		this.MARKER_BLOCK_SIZE = markerHeight;
+	function handlePointerUp() {
+		endDrag();
 	}
 
-	setPositionVariables() {
-		this.HIDDEN_Y_POSITION = this.TARGET_BLOCK_SIZE - this.MARKER_BLOCK_SIZE;
-
-		this.postion =
-			this.state === 'open' ? this.VISIBLE_Y_POSITION : this.HIDDEN_Y_POSITION;
-
-		const position = this.postion;
-		this.setWidgetPosition(position);
+	function handlePointerOut() {
+		endDrag();
 	}
 
-	logger(message) {
-		if (this.config.debug) console.info(message);
+	function handlePointerCancel() {
+		endDrag();
 	}
 
-	setWidgetPosition(value) {
-		this.$target.style.marginBlockEnd = `-${value}px`;
+	function handlePointerMove(event) {
+		drag(event);
 	}
 
-	open() {
-		this.state = 'open';
-		this.logger(this.config);
+	function toggle() {
+		if (!isDragging) {
+			isOpen ? close() : open();
+		}
 	}
 
-	close() {
-		this.state = 'close';
+	function pageY(event) {
+		return event.pageY || event.touches[0].pageY;
+	}
+
+	function startDrag(event) {
+		isDragging = true;
+		startY = pageY(event);
+		removeAnimations();
+	}
+
+	function endDrag() {
+		isDragging = false;
+		setAnimations();
+		bounce();
+	}
+
+	function drag(event) {
+		const cursorY = pageY(event);
+		const movementY = cursorY - startY;
+		widgetPosition += movementY;
+		startY = cursorY;
+		if (widgetPosition > HIDDEN_WIDGET_POSITION) return false;
+		setWidgetPosition(widgetPosition);
+	}
+
+	function bounce(event) {
+		widgetPosition < targetHeight / 2 ? open() : close();
+	}
+
+	// Functions
+
+	function logger(mesagge) {
+		if (config.debug) {
+			console.info(mesagge);
+		}
+	}
+
+	function setWidgetPosition(value) {
+		$target.style.marginBottom = `-${value}px`;
+	}
+
+	function open() {
+		isOpen = true;
+		widgetPosition = VISIBLE_WIDGET_POSITION;
+		setWidgetPosition(widgetPosition);
+	}
+
+	function close() {
+		isOpen = false;
+		widgetPosition = HIDDEN_WIDGET_POSITION;
+
+		setWidgetPosition(widgetPosition);
+	}
+
+	function setAnimations() {
+		$target.style.transition = 'margin-bottom .3s';
+	}
+
+	function removeAnimations() {
+		$target.style.transition = 'none';
 	}
 }
