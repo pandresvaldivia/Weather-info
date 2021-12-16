@@ -10,10 +10,12 @@ export default class Panel {
 		const $panel = this.createTabPanel(index);
 
 		info.forEach((weatherInfo, index) => {
-			console.log(weatherInfo);
 			const data = this.getWeatherInfo(weatherInfo);
 			const $item = this.createItem(data, index);
 			$panel.querySelector('.dayWeather-list').appendChild($item);
+
+			const $details = this.createDetails(data, index);
+			$panel.querySelector('.extraInfo-container').appendChild($details);
 		});
 
 		return $panel;
@@ -25,13 +27,7 @@ export default class Panel {
 			<div class="dayWeather" id="dayWeather-${index}">
 				<ul class="dayWeather-list" id="dayWeather-list-${index}">
 				</ul>
-				<section class="extraInfo" aria-label="Extra information">
-			<article class="extraInfo-max" aria-label="Maximum temperature">Max: ${
-				25 + index
-			}</article>
-			<article class="extraInfo-min" aria-label="Minimum temperature">Min: 18</article>
-			<article class="extraInfo-wind" aria-label="Wind">Wind: 16 Km-h</article>
-			<article class="extraInfo-humidity" aria-label="Humidity">Humidity: 63%</article>
+				<section class="extraInfo-container" aria-label="Extra information">
 				</section> 
 			</div>
 		</div>
@@ -46,7 +42,7 @@ export default class Panel {
 
 	createItem({ temp, date, icon, description }, index) {
 		const itemHtml = `
-			<li class="dayWeather-item">
+			<li class="dayWeather-item" data-index="${index}">
 				<span class="dayWeather-time">${date}</span>
 				<img
 					class="dayWeather-icon"
@@ -67,15 +63,18 @@ export default class Panel {
 		return $item;
 	}
 
-	createDetails() {
+	createDetails({ max, min, wind, humidity }, index) {
 		const detailsHtml = `
-			<article aria-label="Maximum temperature">Max: 26</article>
-			<article aria-label="Minimum temperature">Min: 18</article>
-			<article aria-label="Wind">Wind: 16 Km-h</article>
-			<article aria-label="Humidity">Humidity: 63%</article>
+			<div class="extraInfo" id="extraInfo-${index}">
+				<article class="extraInfo-max aria-label="Maximum temperature">Max: <span class="extraInfo-datum">${max}</span></article>
+				<article class="extraInfo-min" aria-label="Minimum temperature">Min: <span class="extraInfo-datum">${min}</span></article>
+				<article class="extraInfo-wind" aria-label="Wind">Wind: <span class="extraInfo-datum">${wind} Km-h</span></article>
+				<article class="extraInfo-humidity" aria-label="Humidity">Humidity: <span class="extraInfo-datum">${humidity}%</span></article>
+			</div>
 		`;
 
 		const $details = this.createDOMElement(detailsHtml);
+		if (index > 0) $details.classList.add('is-hidden');
 
 		return $details;
 	}
@@ -100,13 +99,19 @@ export default class Panel {
 		};
 
 		const temp = formatTemp(data.main.temp);
+		const min = formatTemp(data.main.temp_min);
+		const max = formatTemp(data.main.temp_max);
 		const date = formatDate(new Date(data.dt * 1000), dateFormat, 'es');
 
 		return {
 			temp,
 			date,
+			min,
+			max,
 			icon: data.weather[0].icon,
 			description: data.weather[0].description,
+			humidity: data.main.humidity,
+			wind: data.wind.speed,
 		};
 	}
 
@@ -124,5 +129,19 @@ export default class Panel {
 
 		$item.classList.add('is-selected');
 		$item.ariaSelected = true;
+
+		this.chooseInfo($item.dataset.index);
+	}
+
+	chooseInfo(index) {
+		const $selectedInfo = document.querySelector(
+			'.tabPanel:not([hidden]) .extraInfo:not(.is-hidden)'
+		);
+		const $info = document.querySelector(
+			`.tabPanel:not([hidden]) #extraInfo-${index}`
+		);
+
+		$selectedInfo.classList.add('is-hidden');
+		$info.classList.remove('is-hidden');
 	}
 }

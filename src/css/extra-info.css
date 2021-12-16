@@ -20,3 +20,11 @@
 .extraInfo-humidity {
 	grid-area: humidity;
 }
+
+.extraInfo.is-hidden {
+	display: none;
+}
+
+.extraInfo-datum {
+	font: var(--body1-bold);
+}

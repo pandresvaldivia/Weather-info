@@ -42,10 +42,11 @@
 	--caption-caption: 400 0.6875rem / normal Nunito;
 }
 
-body {
+.body {
 	margin: 0;
 	font: var(--body1-regular);
 	position: fixed;
 	overflow: hidden;
 	inset: 0;
+	min-inline-size: 22.5rem;
 }
