@@ -60,6 +60,8 @@ export default class Panel {
 		`;
 
 		const $item = this.createDOMElement(itemHtml);
+		const _this = this;
+		$item.addEventListener('click', () => _this.handleItemClick($item, _this));
 		if (index === 0) $item.classList.add('is-selected');
 
 		return $item;
@@ -106,5 +108,21 @@ export default class Panel {
 			icon: data.weather[0].icon,
 			description: data.weather[0].description,
 		};
+	}
+
+	handleItemClick(elem, _this) {
+		_this.chooseItem(elem);
+	}
+
+	chooseItem($item) {
+		const $selectedItem = document.querySelector(
+			'.tabPanel:not([hidden]) .dayWeather-item.is-selected'
+		);
+
+		$selectedItem.classList.remove('is-selected');
+		$selectedItem.ariaSelected = false;
+
+		$item.classList.add('is-selected');
+		$item.ariaSelected = true;
 	}
 }
