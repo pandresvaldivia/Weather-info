@@ -1,0 +1,22 @@
+.extraInfo {
+	display: grid;
+	grid-template-columns: auto 1fr auto;
+	grid-template-areas:
+		'max . min'
+		'wind .  humidity';
+	gap: 1rem;
+	margin-block-end: 1rem;
+}
+
+.extraInfo-max {
+	grid-area: max;
+}
+.extraInfo-min {
+	grid-area: min;
+}
+.extraInfo-wind {
+	grid-area: wind;
+}
+.extraInfo-humidity {
+	grid-area: humidity;
+}

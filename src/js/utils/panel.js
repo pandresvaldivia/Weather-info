@@ -10,6 +10,7 @@ export default class Panel {
 		const $panel = this.createTabPanel(index);
 
 		info.forEach((weatherInfo, index) => {
+			console.log(weatherInfo);
 			const data = this.getWeatherInfo(weatherInfo);
 			const $item = this.createItem(data, index);
 			$panel.querySelector('.dayWeather-list').appendChild($item);
@@ -24,6 +25,14 @@ export default class Panel {
 			<div class="dayWeather" id="dayWeather-${index}">
 				<ul class="dayWeather-list" id="dayWeather-list-${index}">
 				</ul>
+				<section class="extraInfo" aria-label="Extra information">
+			<article class="extraInfo-max" aria-label="Maximum temperature">Max: ${
+				25 + index
+			}</article>
+			<article class="extraInfo-min" aria-label="Minimum temperature">Min: 18</article>
+			<article class="extraInfo-wind" aria-label="Wind">Wind: 16 Km-h</article>
+			<article class="extraInfo-humidity" aria-label="Humidity">Humidity: 63%</article>
+				</section> 
 			</div>
 		</div>
         `;
@@ -45,7 +54,6 @@ export default class Panel {
 					width="48"
 					src="https://openweathermap.org/img/wn/${icon}@2x.png"
 					alt="${description}"
-					rain=""
 				/>
 				<span class="dayWeather-temp">${temp}</span>
 			</li>
@@ -55,6 +63,19 @@ export default class Panel {
 		if (index === 0) $item.classList.add('is-selected');
 
 		return $item;
+	}
+
+	createDetails() {
+		const detailsHtml = `
+			<article aria-label="Maximum temperature">Max: 26</article>
+			<article aria-label="Minimum temperature">Min: 18</article>
+			<article aria-label="Wind">Wind: 16 Km-h</article>
+			<article aria-label="Humidity">Humidity: 63%</article>
+		`;
+
+		const $details = this.createDOMElement(detailsHtml);
+
+		return $details;
 	}
 
 	printPanels() {

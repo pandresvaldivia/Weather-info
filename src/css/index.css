@@ -1,3 +1,7 @@
+.body {
+	min-inline-size: 22.5rem;
+}
+
 .app {
 	block-size: 100vh;
 	background-image: url('../assets/images/morning-clean.webp');
