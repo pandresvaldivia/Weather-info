@@ -15,8 +15,8 @@ import Viewport from './utils/viewport.js';
 
 const viewport = new Viewport();
 
-viewport.viewportSize($app);
-viewport.viewportSize($loader);
+viewport.setViewPortHeight($app);
+viewport.setViewPortHeight($loader);
 
 printTabs();
 currentWeather();
