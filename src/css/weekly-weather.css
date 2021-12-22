@@ -3,6 +3,7 @@
 	border-radius: 1rem 1rem 0 0;
 	user-select: none;
 	touch-action: none;
+	inline-size: 100%;
 }
 
 .weeklyWeather.is-active {

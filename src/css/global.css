@@ -49,4 +49,8 @@
 	overflow: hidden;
 	inset: 0;
 	min-inline-size: 22.5rem;
+	background: var(--primary);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
