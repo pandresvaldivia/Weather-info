@@ -16,6 +16,7 @@
 	border-radius: 3.625rem;
 	padding-block-end: 1rem;
 	padding-block-start: 1rem;
+	cursor: pointer;
 }
 
 .dayWeather-item > * {
